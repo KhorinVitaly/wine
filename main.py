@@ -13,14 +13,14 @@ def render(filepath):
         autoescape=select_autoescape(['html', 'xml'])
     )
 
-    wines_list = read_frome_excel()
+    wines = read_frome_excel(filepath)
     template = env.get_template('template.html')
     rendered_page = template.render(
         years_count=get_years_count(),
-        categories=groupe_by_categories(wines_list),
+        categories=group_by_categories(wines),
     )
 
-    with open(filepath, 'w', encoding="utf8") as file:
+    with open('index.html', 'w', encoding="utf8") as file:
         file.write(rendered_page)
 
     server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
@@ -33,10 +33,10 @@ def get_years_count():
     return current_year - year_of_start_produsing
 
 
-def read_frome_excel():
+def read_frome_excel(filepath):
     names = ['category', 'name', 'type', 'price', 'image', 'promo']
     excel_data_df = pandas.read_excel(
-        'wine3.xlsx',
+        filepath,
         sheet_name='Лист1',
         names=names,
         na_values=None,
@@ -46,9 +46,9 @@ def read_frome_excel():
     return wines
 
 
-def groupe_by_categories(wines_list):
+def group_by_categories(wines):
     categories = defaultdict(list)
-    for item in wines_list:
+    for item in wines:
         categories[item['category']].append(item)
     return categories
 
