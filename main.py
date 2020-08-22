@@ -3,9 +3,11 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from collections import defaultdict
 import datetime
 import pandas
+from dotenv import load_dotenv
+import configargparse
 
 
-def render():
+def render(filepath):
     env = Environment(
         loader=FileSystemLoader('.'),
         autoescape=select_autoescape(['html', 'xml'])
@@ -18,7 +20,7 @@ def render():
         categories=groupe_by_categories(wines_list),
     )
 
-    with open('index.html', 'w', encoding="utf8") as file:
+    with open(filepath, 'w', encoding="utf8") as file:
         file.write(rendered_page)
 
     server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
@@ -52,4 +54,8 @@ def groupe_by_categories(wines_list):
 
 
 if __name__ == '__main__':
-    render()
+    load_dotenv()
+    parser = configargparse.ArgParser()
+    parser.add('--filepath', help='Файл с данными о винах', env_var='WINE_FILEPATH')
+    args = parser.parse_args()
+    render(args.filepath)

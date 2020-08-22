@@ -105,7 +105,7 @@
     
     <div><a id="products"></a></div>
     <div class="site-section">
-      <div class="container">
+      < class="container">
         <div class="row">
           <div class="col-12 section-title text-center mb-5">
             <h2 class="d-block">Коллекция вин</h2>
@@ -113,37 +113,34 @@
             </p>
           </div>
         </div>
-        {% for key, value_list in categories.items() %}
+        {% for category, wines in categories.items() %}
           <div class="col-12 section-title text-center mb-5">
-            <h2 class="d-block">{{key}}</h2>
+            <h2 class="d-block">{{category}}</h2>
           </div>
           <div class="row">
-            {% for item in value_list %}
+            {% for wine in wines %}
               <div class="col-lg-4 mb-5 col-md-6">
                 <div class="wine_v_1 text-center pb-4 pt-5">
-                  <img src="images/{{item.image}}" alt="Image" class="img-fluid">
-                  {% if item.promo %}
+                  <img src="images/{{wine.image}}" alt="Image" class="img-fluid">
+                  {% if wine.promo %}
                     <img src="images/profitable.png" style="width:10rem;height: 10rem;position:absolute;right: -20px;top: -20px;">
                   {% endif %}
                   <div>
-                    <h3 class="heading mt-3 mb-3 text-dark">{{item.name}}</h3>
-                    {% if item.type %}
-                      <p>
-                        Сорт винограда - {{item.type}}<br/>
-                        <span class="price">{{item.price}} р.</span>
-                      </p>
-                    {% else %}
-                      <p>
-                        <span class="price">{{item.price}} р.</span>
-                      </p>
-                    {% endif %}
+                    <h3 class="heading mt-3 mb-3 text-dark">{{wine.name}}</h3>
+                    <p>
+                      {% if wine.type %}
+                        Сорт винограда - {{wine.type}}<br/>
+                        <span class="price">{{wine.price}} р.</span>
+                      {% else %}
+                        <span class="price">{{wine.price}} р.</span>
+                      {% endif %}
+                    </p>
                   </div>
                 </div>
               </div>
             {% endfor %}
           </div>
         {% endfor %}
-        </div>
       </div>
     </div>
 
